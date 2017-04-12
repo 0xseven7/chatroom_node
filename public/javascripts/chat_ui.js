@@ -19,16 +19,17 @@ function processUserInput(chatApp, socket) {
   }
   $('#send-message').val('');
 }
-var socket = io.connect;
+var socket = io.connect();
 $('document').ready(function () {
   var chatApp = new Chat(socket);
   socket.on('nameResult', function (result) {
-    var message = false;
-    if (result.sucess) {
-      message = 'You are now known as' + result.name + '.';
+    var message = ' ';
+    if (result.success) {
+      message = 'You are now known as ' + result.name + '.';
     } else {
       message = result.message;
     }
+    console.log(message);
     $('#message').append(divSystemContentElement(message));
   });
   socket.on('joinResult', function (result) {
@@ -42,7 +43,7 @@ $('document').ready(function () {
   socket.on('rooms', function (rooms) {
     $('#room-list').empty();
     for (var room in rooms) {
-      room = room.substring(1, room.length);
+      room = room.substring(0, room.length);
       if (room !== '') {
         $('#room-list').append(divEscapedContentElement(room));
       }
@@ -57,6 +58,7 @@ $('document').ready(function () {
     socket.emit('rooms');
   }, 1000);
   $('#send-message').focus();
+
   $('#send-form').submit(function () {
     processUserInput(chatApp, socket);
     return false;
