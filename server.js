@@ -55,6 +55,10 @@ server.listen(8000, function () {
   console.log('server is lisening at 8000');
 });
 
+// 共享端口
+var chatServer = require('./lib/chat_server');
+chatServer.listen(server);
+
 
 
 
